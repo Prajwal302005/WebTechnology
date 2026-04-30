@@ -1,0 +1,100 @@
+<!-- Add Transaction Page -->
+<div class="add-container">
+
+  <!-- Header -->
+  <header class="page-header">
+    <a routerLink="/" class="btn-back">← Back</a>
+    <h1 class="page-title">Add Transaction</h1>
+  </header>
+
+  <!-- Form Card -->
+  <div class="form-card">
+
+    <!-- Error message -->
+    <div *ngIf="errorMsg" class="alert alert-error">{{ errorMsg }}</div>
+
+    <form [formGroup]="txForm" (ngSubmit)="onSubmit()" novalidate>
+
+      <!-- Type Toggle (Income / Expense) -->
+      <div class="form-group">
+        <label class="form-label">Type</label>
+        <div class="type-toggle">
+          <label class="toggle-option" [class.active]="f['type'].value === 'expense'">
+            <input type="radio" formControlName="type" value="expense"> Expense
+          </label>
+          <label class="toggle-option" [class.active]="f['type'].value === 'income'">
+            <input type="radio" formControlName="type" value="income"> Income
+          </label>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <div class="form-group">
+        <label class="form-label" for="title">Title</label>
+        <input
+          id="title"
+          type="text"
+          class="form-control"
+          [class.is-invalid]="submitted && f['title'].errors"
+          formControlName="title"
+          placeholder="e.g. Grocery, Salary..."
+        />
+        <div class="invalid-feedback" *ngIf="submitted && f['title'].errors">
+          <span *ngIf="f['title'].errors?.['required']">Title is required.</span>
+          <span *ngIf="f['title'].errors?.['minlength']">Minimum 2 characters.</span>
+        </div>
+      </div>
+
+      <!-- Amount -->
+      <div class="form-group">
+        <label class="form-label" for="amount">Amount (₹)</label>
+        <input
+          id="amount"
+          type="number"
+          class="form-control"
+          [class.is-invalid]="submitted && f['amount'].errors"
+          formControlName="amount"
+          placeholder="0"
+          min="1"
+        />
+        <div class="invalid-feedback" *ngIf="submitted && f['amount'].errors">
+          <span *ngIf="f['amount'].errors?.['required']">Amount is required.</span>
+          <span *ngIf="f['amount'].errors?.['min']">Amount must be at least ₹1.</span>
+        </div>
+      </div>
+
+      <!-- Date -->
+      <div class="form-group">
+        <label class="form-label" for="date">Date</label>
+        <input
+          id="date"
+          type="date"
+          class="form-control"
+          [class.is-invalid]="submitted && f['date'].errors"
+          formControlName="date"
+        />
+        <div class="invalid-feedback" *ngIf="submitted && f['date'].errors">Date is required.</div>
+      </div>
+
+      <!-- Category Dropdown -->
+      <div class="form-group">
+        <label class="form-label" for="category">Category</label>
+        <select id="category" class="form-control" formControlName="category">
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="onReset()">Reset</button>
+        <button type="submit" class="btn btn-primary"
+          [class.btn-income]="f['type'].value === 'income'"
+          [class.btn-expense]="f['type'].value === 'expense'">
+          Add {{ f['type'].value === 'income' ? 'Income' : 'Expense' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</div>

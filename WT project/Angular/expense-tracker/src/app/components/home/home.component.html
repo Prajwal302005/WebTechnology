@@ -1,0 +1,59 @@
+<!-- Home Page: shows summary cards and transaction list -->
+<div class="home-container">
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="header-content">
+      <div>
+        <h1 class="app-title">💰 Expense Tracker</h1>
+        <p class="app-subtitle">Track your income & spending</p>
+      </div>
+      <a routerLink="/add" class="btn-add">+ Add Transaction</a>
+    </div>
+  </header>
+
+  <!-- Summary Cards -->
+  <section class="summary-grid">
+
+    <!-- Total Balance -->
+    <div class="card balance-card">
+      <span class="card-label">Total Balance</span>
+      <span class="card-amount" [class.negative]="balance < 0">
+        ₹{{ balance | number:'1.0-0' }}
+      </span>
+    </div>
+
+    <!-- Total Income -->
+    <div class="card income-card">
+      <span class="card-label">↑ Income</span>
+      <span class="card-amount income-text">₹{{ totalIncome | number:'1.0-0' }}</span>
+    </div>
+
+    <!-- Total Expenses -->
+    <div class="card expense-card">
+      <span class="card-label">↓ Expenses</span>
+      <span class="card-amount expense-text">₹{{ totalExpenses | number:'1.0-0' }}</span>
+    </div>
+
+  </section>
+
+  <!-- Transaction List -->
+  <section class="transactions-section">
+    <h2 class="section-title">Transactions
+      <span class="count-badge">{{ transactions.length }}</span>
+    </h2>
+
+    <!-- Empty state -->
+    <div *ngIf="transactions.length === 0" class="empty-state">
+      <p>No transactions yet.</p>
+      <a routerLink="/add" class="btn-add">Add your first one</a>
+    </div>
+
+    <!-- Transaction list component -->
+    <app-transaction-list
+      *ngIf="transactions.length > 0"
+      [transactions]="transactions">
+    </app-transaction-list>
+  </section>
+
+</div>

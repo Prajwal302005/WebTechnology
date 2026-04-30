@@ -1,0 +1,23 @@
+<!-- Renders a list of all transactions -->
+<ul class="transaction-list">
+  <li *ngFor="let t of transactions" class="transaction-item">
+
+    <!-- Left: icon + details -->
+    <div class="tx-left">
+      <span class="tx-icon">{{ getCategoryIcon(t.category) }}</span>
+      <div class="tx-info">
+        <span class="tx-title">{{ t.title }}</span>
+        <span class="tx-meta">{{ t.category }} · {{ t.date | date:'mediumDate' }}</span>
+      </div>
+    </div>
+
+    <!-- Right: amount + delete -->
+    <div class="tx-right">
+      <span class="tx-amount" [class.income]="t.type === 'income'" [class.expense]="t.type === 'expense'">
+        {{ t.type === 'income' ? '+' : '-' }}₹{{ t.amount | number:'1.0-0' }}
+      </span>
+      <button class="btn-delete" (click)="delete(t.id)" title="Delete">✕</button>
+    </div>
+
+  </li>
+</ul>

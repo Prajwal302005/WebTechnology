@@ -1,0 +1,89 @@
+/* Transaction List Styles */
+
+.transaction-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.transaction-item {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transition: box-shadow 0.15s;
+}
+.transaction-item:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+/* Left section */
+.tx-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.tx-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+.tx-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.tx-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tx-meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Right section */
+.tx-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.tx-amount {
+  font-size: 1rem;
+  font-weight: 700;
+}
+.tx-amount.income  { color: var(--income-color); }
+.tx-amount.expense { color: var(--expense-color); }
+
+.btn-delete {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.btn-delete:hover {
+  background: var(--expense-color);
+  border-color: var(--expense-color);
+  color: #fff;
+}

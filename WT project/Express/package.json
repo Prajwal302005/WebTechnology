@@ -1,0 +1,15 @@
+{
+  "name": "medicine-reminder",
+  "version": "1.0.0",
+  "description": "Smart Medicine Reminder App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.22.1"
+  }
+}

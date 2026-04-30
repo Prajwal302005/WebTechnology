@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Medicine Reminder</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ░░ TOAST CONTAINER ░░ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ░░ TOP BAR ░░ -->
+<header class="topbar">
+  <div class="logo">💊 Medi<span>Remind</span></div>
+  <div class="topbar-actions">
+    <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;border:none"
+      onclick="speakTodayReminders()" id="voiceBtn" title="Read reminders aloud">🔊 Speak</button>
+    <button class="dark-toggle" onclick="toggleDark()" id="darkBtn" title="Toggle dark mode">🌙</button>
+  </div>
+</header>
+
+<!-- ░░ NAV TABS ░░ -->
+<nav class="nav-tabs" role="tablist">
+  <button class="nav-tab active" data-tab="dashboard" onclick="switchTab('dashboard')" role="tab">
+    <span class="tab-icon">🏠</span> Dashboard
+  </button>
+  <button class="nav-tab" data-tab="medicines" onclick="switchTab('medicines')" role="tab">
+    <span class="tab-icon">💊</span> Medicines
+  </button>
+  <button class="nav-tab" data-tab="profile" onclick="switchTab('profile')" role="tab">
+    <span class="tab-icon">👤</span> My Profile
+  </button>
+</nav>
+
+<!-- ════════════════════════════════════
+     PAGE 1 — DASHBOARD
+════════════════════════════════════ -->
+<section class="page active" id="dashboard">
+
+  <h1 class="section-title">🏠 Today's Dashboard</h1>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-value" id="statTotal">0</div>
+      <div class="stat-label">Total Today</div>
+    </div>
+    <div class="stat-card" style="border-color:var(--success)">
+      <div class="stat-value" style="color:var(--success)" id="statTaken">0</div>
+      <div class="stat-label">✅ Taken</div>
+    </div>
+    <div class="stat-card" style="border-color:var(--accent)">
+      <div class="stat-value" style="color:var(--accent)" id="statMissed">0</div>
+      <div class="stat-label">❌ Missed</div>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="card">
+    <div class="progress-wrap">
+      <div class="progress-label" id="progressLabel">0% of today's medicines taken</div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+      <div style="font-size:1.1rem;font-weight:700;color:var(--muted)" id="statPct">0%</div>
+      <div style="font-size:1rem;color:var(--muted)">adherence today</div>
+    </div>
+  </div>
+
+  <!-- Today's medicines -->
+  <h2 class="section-title" style="font-size:1.4rem">💊 Today's Medicines</h2>
+  <div id="dashboardList" class="medicine-list"></div>
+
+  <!-- Quick add CTA -->
+  <div style="text-align:center;margin-top:28px">
+    <button class="btn btn-primary btn-lg" onclick="switchTab('medicines');openAddModal()">
+      ➕ Add Medicine
+    </button>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════════════
+     PAGE 2 — MEDICINES
+════════════════════════════════════ -->
+<section class="page" id="medicines">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+    <h1 class="section-title" style="margin:0">💊 All Medicines</h1>
+    <button class="btn btn-primary" onclick="openAddModal()">➕ Add Medicine</button>
+  </div>
+
+  <div id="allMedicineList" class="medicine-list"></div>
+
+</section>
+
+<!-- ════════════════════════════════════
+     PAGE 3 — PROFILE
+════════════════════════════════════ -->
+<section class="page" id="profile">
+
+  <h1 class="section-title">👤 Medical Profile</h1>
+
+  <!-- Profile display header -->
+  <div class="profile-header">
+    <div class="avatar" id="profileAvatar">P</div>
+    <div class="profile-info">
+      <h2 id="profileName">Your Name</h2>
+      <p id="profileSub">Complete your profile below</p>
+    </div>
+  </div>
+
+  <!-- Profile form -->
+  <div class="card">
+    <div class="card-title">📝 Edit Profile</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="pName">Full Name</label>
+        <input class="form-control" type="text" id="pName" placeholder="e.g. Ramesh Sharma"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="pAge">Age</label>
+        <input class="form-control" type="number" id="pAge" placeholder="e.g. 72" min="1" max="120"/>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="pBlood">Blood Group</label>
+        <select class="form-control" id="pBlood">
+          <option value="">Select</option>
+          <option>A+</option><option>A-</option>
+          <option>B+</option><option>B-</option>
+          <option>AB+</option><option>AB-</option>
+          <option>O+</option><option>O-</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="pEmergencyContact">Emergency Contact</label>
+        <input class="form-control" type="tel" id="pEmergencyContact" placeholder="e.g. +91 98765 43210"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="pAllergies">Known Allergies</label>
+      <input class="form-control" type="text" id="pAllergies" placeholder="e.g. Penicillin, Sulpha drugs"/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="pDiseases">Existing Conditions / Diseases</label>
+      <input class="form-control" type="text" id="pDiseases" placeholder="e.g. Diabetes Type 2, Hypertension"/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="pDoctorName">Doctor's Name</label>
+      <input class="form-control" type="text" id="pDoctorName" placeholder="e.g. Dr. Priya Mehta"/>
+    </div>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+      <button class="btn btn-primary btn-lg" onclick="saveProfileForm()">💾 Save Profile</button>
+      <button class="btn btn-outline btn-lg" onclick="printReport()">🖨️ Print Report</button>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ════════════════════════════════════
+     MODAL — Add / Edit Medicine
+════════════════════════════════════ -->
+<div class="modal-overlay" id="medModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="medModalTitle">Add Medicine</div>
+      <button class="btn-icon" onclick="closeMedModal()">✕</button>
+    </div>
+
+    <input type="hidden" id="medEditId"/>
+
+    <div class="form-group">
+      <label class="form-label" for="fName">Medicine Name *</label>
+      <input class="form-control" type="text" id="fName" placeholder="e.g. Metformin 500mg"/>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="fDosage">Dosage</label>
+        <input class="form-control" type="text" id="fDosage" placeholder="e.g. 1 tablet"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="fTime">Reminder Time</label>
+        <input class="form-control" type="time" id="fTime"/>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="fStart">Start Date</label>
+        <input class="form-control" type="date" id="fStart"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="fEnd">End Date</label>
+        <input class="form-control" type="date" id="fEnd"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="fNotes">Notes</label>
+      <input class="form-control" type="text" id="fNotes" placeholder="e.g. Take after meals"/>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeMedModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveMedForm()">💾 Save</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
